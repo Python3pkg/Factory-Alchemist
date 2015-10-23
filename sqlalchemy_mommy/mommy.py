@@ -9,12 +9,13 @@ BaseModel = None
 def make(session, model_, **kwargs):
     record = model_(**kwargs)
 
-    for foreign_key in _non_nullable_foreign_keys(model_):
-        fk_value = make(session, _get_class_by_tablename(foreign_key.column.table.name))
-        setattr(record, foreign_key.parent.name, getattr(fk_value, foreign_key.column.name))
-
     for column in _non_nullable_columns(model_):
-        setattr(record, column.name, generate_value(column.type))
+        if column.foreign_keys:
+            for foreign_key in column.foreign_keys:
+                fk_value = make(session, _get_class_by_tablename(foreign_key.column.table.name))
+                setattr(record, foreign_key.parent.name, getattr(fk_value, foreign_key.column.name))
+        else:
+            setattr(record, column.name, generate_value(column.type))
 
     session.add(record)
     session.flush()
@@ -57,13 +58,9 @@ TYPE_VALUE_GENERATOR_MAPPER = {
 }
 
 
-def _non_nullable_foreign_keys(model_):
-    return {fk for fk in model_.__table__.foreign_keys if not fk.column.nullable}
-
-
 def _non_nullable_columns(model_):
     return {column[1] for column in model_.__table__.columns.items()
-            if not column[1].foreign_keys and not column[1].nullable and not column[1].primary_key}
+            if not column[1].nullable and not column[1].primary_key}
 
 
 def _get_class_by_tablename(tablename):
