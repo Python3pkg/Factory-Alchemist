@@ -1,6 +1,7 @@
 import random
 import string
-from sqlalchemy import Integer, String, SmallInteger, BigInteger, Boolean, Table
+from datetime import date, timedelta
+from sqlalchemy import Integer, String, SmallInteger, BigInteger, Boolean, Table, Date
 from sqlalchemy.ext.declarative import declarative_base
 
 
@@ -55,12 +56,17 @@ def _generate_bool(type_=None):
     return random.choice((True, False))
 
 
+def _generate_date(type_=None):
+    return date(random.randint(1950, 2050), random.randint(1, 12), random.randint(1, 28))
+
+
 TYPE_VALUE_GENERATOR_MAPPER = {
     SmallInteger: _generate_smallint,
     Integer: _generate_int,
     BigInteger: _generate_bigint,
     String: _generate_str,
     Boolean: _generate_bool,
+    Date: _generate_date,
 }
 
 
