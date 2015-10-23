@@ -1,6 +1,6 @@
 from unittest import TestCase
 from datetime import date, datetime
-from sqlalchemy import Integer, String, SmallInteger, BigInteger, Boolean, Date, DateTime, Enum
+from sqlalchemy import Integer, String, SmallInteger, BigInteger, Boolean, Date, DateTime, Enum, Float
 from sqlalchemy_mommy import mommy
 from . import BaseTest
 from .dummy_models import Session, Spam, Ham, BaseModel, FishTable
@@ -54,6 +54,19 @@ class IntegerValueGeneratorTest(TestCase):
             value = mommy.generate_value(BigInteger())
             self.assertGreaterEqual(value, 0)
             self.assertLessEqual(value, 9223372036854775807)
+
+
+class FloatValueGeneratorTest(TestCase):
+    def test_generate_random_float(self):
+        value = mommy.generate_value(Float())
+        self.assertIsInstance(value, float)
+
+    def test_generate_random_float_between_in_interval(self):
+        for _ in range(100):
+            value = mommy.generate_value(Float())
+
+            self.assertGreaterEqual(value, 0.0)
+            self.assertLessEqual(value, 99999.0)
 
 
 class StringValueGeneratorTest(TestCase):
