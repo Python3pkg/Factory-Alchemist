@@ -1,6 +1,6 @@
 from unittest import TestCase
-from datetime import date
-from sqlalchemy import Integer, String, SmallInteger, BigInteger, Boolean, Date
+from datetime import date, datetime
+from sqlalchemy import Integer, String, SmallInteger, BigInteger, Boolean, Date, DateTime
 from sqlalchemy_mommy import mommy
 from . import BaseTest
 from .dummy_models import Session, Spam, Ham, BaseModel, FishTable
@@ -79,3 +79,14 @@ class DateValueGeneratorTest(TestCase):
 
     def test_generate_date_type(self):
         self.assertIsInstance(mommy.generate_value(Date()), date)
+
+
+class DateTimeValueGeneratorTest(TestCase):
+    def test_generate_random_value_between_datetimes(self):
+        for i in range(100):
+            value = mommy.generate_value(DateTime())
+            self.assertTrue(value > datetime(1950, 1, 1, 0, 0, 0))
+            self.assertTrue(value < datetime(2050, 12, 31, 23, 59, 59))
+
+    def test_generate_datetime_type(self):
+        self.assertIsInstance(mommy.generate_value(DateTime()), datetime)

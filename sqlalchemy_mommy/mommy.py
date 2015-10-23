@@ -1,7 +1,7 @@
 import random
 import string
-from datetime import date, timedelta
-from sqlalchemy import Integer, String, SmallInteger, BigInteger, Boolean, Table, Date
+from datetime import date, timedelta, datetime
+from sqlalchemy import Integer, String, SmallInteger, BigInteger, Boolean, Table, Date, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 
 
@@ -60,6 +60,11 @@ def _generate_date(type_=None):
     return date(random.randint(1950, 2050), random.randint(1, 12), random.randint(1, 28))
 
 
+def _generate_datetime(type_=None):
+    return datetime(random.randint(1950, 2050), random.randint(1, 12), random.randint(1, 28),
+                    random.randint(0, 23), random.randint(0, 59), random.randint(0, 59))
+
+
 TYPE_VALUE_GENERATOR_MAPPER = {
     SmallInteger: _generate_smallint,
     Integer: _generate_int,
@@ -67,6 +72,7 @@ TYPE_VALUE_GENERATOR_MAPPER = {
     String: _generate_str,
     Boolean: _generate_bool,
     Date: _generate_date,
+    DateTime: _generate_datetime,
 }
 
 
