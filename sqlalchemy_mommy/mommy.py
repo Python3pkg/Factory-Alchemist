@@ -23,9 +23,10 @@ def make(session, model_, **kwargs):
 
 
 def generate_value(type_):
-    for mapping_type, value_generator in TYPE_VALUE_GENERATOR_MAPPER.iteritems():
-        if isinstance(type_, mapping_type):
-            return value_generator(type_)
+    value_generator = TYPE_VALUE_GENERATOR_MAPPER.get(type_.__class__)
+
+    if value_generator:
+        return value_generator(type_)
 
 
 def _generate_int(type_=None, max=2147483647):
