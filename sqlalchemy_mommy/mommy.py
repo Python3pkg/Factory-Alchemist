@@ -1,12 +1,17 @@
 import random
 import string
-from sqlalchemy import Integer, String, SmallInteger, BigInteger, Boolean
+from sqlalchemy import Integer, String, SmallInteger, BigInteger, Boolean, Table
+from sqlalchemy.ext.declarative import declarative_base
 
 
 BaseModel = None
 
 
 def make(session, model_, **kwargs):
+    if isinstance(model_, Table):
+        table = model_
+        model_ = type('', (declarative_base(),), {'__table__': table})
+
     record = model_(**kwargs)
 
     for column in _non_nullable_columns(model_):

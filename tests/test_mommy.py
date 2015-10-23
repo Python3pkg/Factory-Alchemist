@@ -2,7 +2,7 @@ from unittest import TestCase
 from sqlalchemy import Integer, String, SmallInteger, BigInteger, Boolean
 from sqlalchemy_mommy import mommy
 from . import BaseTest
-from .dummy_models import Session, Spam, Ham, BaseModel
+from .dummy_models import Session, Spam, Ham, BaseModel, FishTable
 
 
 mommy.BaseModel = BaseModel
@@ -29,6 +29,12 @@ class MakeTest(BaseTest):
 
         self.assertEqual(self.s.query(Ham.id, Ham.spam_id).all(), [(1, 1)])
         self.assertEqual(self.s.query(Spam.id).all(), [(1,)])
+
+    def test_create_from_table_object(self):
+        mommy.make(self.s, FishTable, id=5)
+        mommy.make(self.s, FishTable, id=11)
+
+        self.assertItemsEqual(list(FishTable.select().execute()), [(5, 1), (11, 2)])
 
 
 class IntegerValueGeneratorTest(TestCase):

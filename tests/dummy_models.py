@@ -22,3 +22,8 @@ class Ham(BaseModel):
 
     id = Column(Integer, primary_key=True)
     spam_id = Column(Integer, ForeignKey('spam.id'), nullable=False)
+
+
+FishTable = Table('fish', metadata,
+                  Column('id', Integer, primary_key=True),
+                  Column('spam_id', Integer, ForeignKey('spam.id'), nullable=False))
