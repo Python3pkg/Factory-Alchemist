@@ -1,6 +1,6 @@
 from unittest import TestCase
 from datetime import date, datetime
-from sqlalchemy import Integer, String, SmallInteger, BigInteger, Boolean, Date, DateTime
+from sqlalchemy import Integer, String, SmallInteger, BigInteger, Boolean, Date, DateTime, Enum
 from sqlalchemy_mommy import mommy
 from . import BaseTest
 from .dummy_models import Session, Spam, Ham, BaseModel, FishTable
@@ -90,3 +90,11 @@ class DateTimeValueGeneratorTest(TestCase):
 
     def test_generate_datetime_type(self):
         self.assertIsInstance(mommy.generate_value(DateTime()), datetime)
+
+
+class EnumValueGeneratorTest(TestCase):
+    def test_generate_list_of_strings(self):
+        values = mommy.generate_value(Enum())
+
+        self.assertIsInstance(values, list)
+        self.assertTrue(all([isinstance(v, str) for v in values]))

@@ -1,7 +1,7 @@
 import random
 import string
 from datetime import date, timedelta, datetime
-from sqlalchemy import Integer, String, SmallInteger, BigInteger, Boolean, Table, Date, DateTime
+from sqlalchemy import Integer, String, SmallInteger, BigInteger, Boolean, Table, Date, DateTime, Enum
 from sqlalchemy.ext.declarative import declarative_base
 
 
@@ -47,9 +47,13 @@ def _generate_bigint(type_=None):
     return _generate_int(type_, 9223372036854775807)
 
 
+def _randomword(length):
+   return ''.join(random.choice(string.lowercase) for i in range(length))
+
+
 def _generate_str(type_=None):
     length = type_.length if type_.length else 50
-    return ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(length))
+    return _randomword(length)
 
 
 def _generate_bool(type_=None):
@@ -65,6 +69,10 @@ def _generate_datetime(type_=None):
                     random.randint(0, 23), random.randint(0, 59), random.randint(0, 59))
 
 
+def _generate_enum(type_=None):
+    return [_randomword(5) for _ in range(random.randint(1, 10))]
+
+
 TYPE_VALUE_GENERATOR_MAPPER = {
     SmallInteger: _generate_smallint,
     Integer: _generate_int,
@@ -73,6 +81,7 @@ TYPE_VALUE_GENERATOR_MAPPER = {
     Boolean: _generate_bool,
     Date: _generate_date,
     DateTime: _generate_datetime,
+    Enum: _generate_enum,
 }
 
 
