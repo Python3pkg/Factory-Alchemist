@@ -31,11 +31,18 @@ class MakeTest(BaseTest):
         self.assertEqual(self.s.query(Ham.id, Ham.spam_id).all(), [(1, 1)])
         self.assertEqual(self.s.query(Spam.id).all(), [(1,)])
 
+
+class MakeFromTableTest(BaseTest):
     def test_create_from_table_object(self):
-        mommy.make(self.s, FishTable, id=5)
-        mommy.make(self.s, FishTable, id=11)
+        fish_1 = mommy.make_t(FishTable, id=5)
+        fish_2 = mommy.make_t(FishTable, id=11)
 
         self.assertItemsEqual(list(FishTable.select().execute()), [(5, 1), (11, 2)])
+
+        self.assertEqual(fish_1.id, 5)
+        self.assertEqual(fish_1.spam_id, 1)
+        self.assertEqual(fish_2.id, 11)
+        self.assertEqual(fish_2.spam_id, 2)
 
 
 class IntegerValueGeneratorTest(TestCase):
