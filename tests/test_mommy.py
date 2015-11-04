@@ -114,7 +114,6 @@ class DateTimeValueGeneratorTest(TestCase):
 
 class EnumValueGeneratorTest(TestCase):
     def test_generate_list_of_strings(self):
-        values = mommy.generate_value(Enum())
-
-        self.assertIsInstance(values, list)
-        self.assertTrue(all([isinstance(v, str) for v in values]))
+        for _ in range(100):
+            value = mommy.generate_value(Enum('ham', 'spam'))
+            self.assertIn(value, ['ham', 'spam'])

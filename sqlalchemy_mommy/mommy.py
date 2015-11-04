@@ -99,7 +99,7 @@ def _generate_datetime(type_=None):
 
 
 def _generate_enum(type_=None):
-    return [_randomword(5) for _ in range(random.randint(1, 10))]
+    return random.choice(type_.enums)
 
 
 TYPE_VALUE_GENERATOR_MAPPER = {
