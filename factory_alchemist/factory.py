@@ -5,6 +5,12 @@ from sqlalchemy import Integer, String, SmallInteger, BigInteger, Boolean, Table
 from sqlalchemy.ext.declarative import declarative_base
 
 
+try:
+    lowercase_chars = string.ascii_uppercase
+except AttributeError:
+    lowercase_chars = string.lowercase
+
+
 BaseModel = None
 
 
@@ -77,7 +83,7 @@ def _generate_float(type_=None):
 
 
 def _randomword(length):
-   return ''.join(random.choice(string.lowercase) for i in range(length))
+   return ''.join(random.choice(lowercase_chars) for i in range(length))
 
 
 def _generate_str(type_=None):
