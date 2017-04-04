@@ -1,5 +1,5 @@
 from setuptools import setup, find_packages
-from sqlalchemy_mommy import __version__
+from factory_alchemist import __version__
 
 
 setup(name='Factory-Alchemist',
