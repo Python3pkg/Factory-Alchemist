@@ -3,4 +3,7 @@
 .cache/
 .coverage
 htmlcov/
+*.egg-info/
+dist/
+.idea/
 
