@@ -21,7 +21,7 @@ def make(session, model_, **kwargs):
 
     record = model_(**kwargs)
 
-    for column in _non_nullable_columns(*model_.__table__.columns.values()):
+    for column in _non_nullable_columns(*list(model_.__table__.columns.values())):
         if column.foreign_keys:
             for foreign_key in column.foreign_keys:
                 fk_value = make(session, _get_class_by_tablename(foreign_key.column.table.name))
@@ -53,7 +53,7 @@ def make_t(table_, **kwargs):
     result = table_.insert().values(**record_values).execute()
 
     # assume this table has exactly one primary key
-    key_name = table_.primary_key.columns.keys()[0]
+    key_name = list(table_.primary_key.columns.keys())[0]
     key_value = result.lastrowid
 
     return table_.select(getattr(table_.c, key_name) == key_value).execute().first()
@@ -130,6 +130,6 @@ def _get_class_by_tablename(tablename):
   if not BaseModel:
       raise Exception('BaseModel must be defined')
 
-  for c in BaseModel._decl_class_registry.values():
+  for c in list(BaseModel._decl_class_registry.values()):
     if hasattr(c, '__tablename__') and c.__tablename__ == tablename:
       return c
